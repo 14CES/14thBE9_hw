@@ -20,15 +20,54 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['id', 'name', 'content', 'created_at', 'updated_at', 'tags', 'image', 'comments']
+        fields = [
+            'id', 
+            'name', 
+            'content', 
+            'created_at', 
+            'updated_at', 
+            'tags', 
+            'image', 
+            'comments', 
+            'like_count',
+            'click_count',
+        ]
+        read_only_fields = ['writer']
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
-        read_only_fields = ['post']
+        read_only_fields = ['post', 'writer']
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = '__all__'
+
+class PostListSerializer(serializers.ModelSerializer):
+    comments_count = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()
+
+    def get_comments_count(self, instance):
+        return instance.comments.count()
+
+    def get_tags(self, instance):
+        return[
+            tag.name 
+            for tag in instance.tags.all()
+        ]
+
+    class Meta:
+        model = Post
+        fields = [
+            'id',
+            'name',
+            'content',
+            'created_at',
+            'updated_at',
+            'tags',
+            'image',
+            'comments_count',
+            'like_count',
+        ]
