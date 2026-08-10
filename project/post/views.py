@@ -1,5 +1,4 @@
 from django.shortcuts import render
-
 # Create your views here.
 
 from rest_framework import mixins, viewsets, status
@@ -103,12 +102,11 @@ class PostViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin, mixins.UpdateModelMixin,mixins.DestroyModelMixin):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [
-        IsWriterOrReadOnly
-    ]
+    permission_classes = [IsWriterOrReadOnly]
 
 class PostCommentViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
     serializer_class = CommentSerializer
+    permission_classes = [IsWriterOrReadOnly]
 
     def get_queryset(self):
         post_id = self.kwargs.get('post_id')
