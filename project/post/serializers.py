@@ -31,6 +31,7 @@ class PostSerializer(serializers.ModelSerializer):
             'comments', 
             'like_count',
             'click_count',
+            'writer',
         ]
         read_only_fields = ['writer']
 

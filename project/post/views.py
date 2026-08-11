@@ -52,10 +52,10 @@ class PostViewSet(viewsets.ModelViewSet):
         post = (
             self.get_queryset()
             .order_by('?')
-            .firsr()
+            .first()
         )
 
-        if post in None:
+        if post is None:
             return Response(
                 {
                     "detail": "등록된 영화가 없습니다."
